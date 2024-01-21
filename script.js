@@ -1,7 +1,7 @@
 /* init game structure */
 
-const GAME_BACKGROUND_COLOR = "white";
-const GAME_BORDER_COLOR = "black";
+const GAME_BACKGROUND_COLOR = "black";
+const GAME_BORDER_COLOR = "darkgreen";
 const SNAKE_COLOR = 'lightgreen';
 const SNAKE_BORDER_COLOR = 'darkgreen';
 const FOOD_COLOR = 'red';
@@ -20,6 +20,7 @@ let foodY;
 let dx=10;
 let dy=0;
 let score=0;
+let changeDirection = false;
 
 const gameCanvas = document.getElementById("gameCanvas");
 const ctx = gameCanvas.getContext("2d");
@@ -82,6 +83,9 @@ function changeDirection(event) {
     const RIGHT = 39;
     const UP = 38;
     const DOWN = 40;
+
+    if (changeDirection) return;
+    changeDirection = true;
 
     const keyPress = event.keyCode;
     const goUp = dy === -10;
