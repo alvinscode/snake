@@ -17,6 +17,7 @@ let foodX;
 let foodY;
 let dx=10;
 let dy=0;
+let score=0;
 
 const gameCanvas = document.getElementById("gameCanvas");
 const ctx = gameCanvas.getContext("2d");
@@ -48,6 +49,8 @@ function advanceSnake() {
     snake.unshift(head);
     const didEatFood = snake[0].x === foodX && snake[0].y === foodY;
     if (didEatFood) {
+        score += 10;
+        document.getElementById('score').innerHTML = score;
         createFood();
     } else {
         snake.pop();
