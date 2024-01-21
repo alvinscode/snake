@@ -2,20 +2,8 @@ const GAME_BACKGROUND_COLOR = "white";
 const GAME_BORDER_COLOR = "black";
 const SNAKE_COLOR = 'lightgreen';
 const SNAKE_BORDER_COLOR = 'darkgreen';
-
-const gameCanvas = document.getElementById("gameCanvas");
-const ctx = gameCanvas.getContext("2d");
-
-main();
-
-document.addEventListener("keydown", changeDirection)
-
-function clearCanvas(){
-    ctx.fillStyle = GAME_BACKGROUND_COLOR;
-    ctx.strokeStyle = GAME_BORDER_COLOR;
-    ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
-    ctx.strokeRect(0, 0, gameCanvas.width, gameCanvas.height);
-}
+const FOOD_COLOR = 'red';
+const FOOD_BORDER_COLOR = 'darkred';
 
 let snake = [ 
     {x: 150, y: 150}, 
@@ -25,8 +13,24 @@ let snake = [
     {x: 110, y: 150}, 
 ];
 
+let foodX;
+let foodY;
 let dx=10;
 let dy=0;
+
+const gameCanvas = document.getElementById("gameCanvas");
+const ctx = gameCanvas.getContext("2d");
+
+main();
+createFood();
+document.addEventListener("keydown", changeDirection)
+
+function clearCanvas(){
+    ctx.fillStyle = GAME_BACKGROUND_COLOR;
+    ctx.strokeStyle = GAME_BORDER_COLOR;
+    ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+    ctx.strokeRect(0, 0, gameCanvas.width, gameCanvas.height);
+}
 
 function drawSnakePart(snakePart) {
     ctx.fillStyle = SNAKE_COLOR;
@@ -48,6 +52,7 @@ function advanceSnake() {
 function main() {
     setTimeout(function onTick() {
         clearCanvas();
+        drawFood();
         advanceSnake();
         drawSnake();
         main();
@@ -86,4 +91,25 @@ function changeDirection(event) {
         dy = 10;
     }
 
-}   
+}
+
+function randomTen(min, max) {
+    return Math.round((Math.random() * (max-min) + min) / 10) * 10;
+}
+
+function createFood() {
+    foodX = randomTen(0, gameCanvas.width - 10);
+    foodY = randomTen(0, gameCanvas.height - 10);
+
+    snake.forEach(function isFoodOnSnake(part) {
+        const foodIsOnSnake = part.x == foodX && part.y == foodY;
+        if (foodIsOnSnake) createFood();
+    });   
+}
+
+function drawFood() {
+    ctx.fillStyle = FOOD_COLOR;
+    ctx.strokeStyle = FOOD_BORDER_COLOR;
+    ctx.fillRect(foodX, foodY, 10, 10);
+    ctx.strokeRect(foodX, foodY, 10, 10);
+}
