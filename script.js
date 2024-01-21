@@ -1,3 +1,5 @@
+/* init game structure */
+
 const GAME_BACKGROUND_COLOR = "white";
 const GAME_BORDER_COLOR = "black";
 const SNAKE_COLOR = 'lightgreen';
@@ -22,9 +24,27 @@ let score=0;
 const gameCanvas = document.getElementById("gameCanvas");
 const ctx = gameCanvas.getContext("2d");
 
+/* init game start */
+
 main();
 createFood();
 document.addEventListener("keydown", changeDirection)
+
+/* main game function */
+
+function main() {
+    if (didGameEnd()) return;
+
+    setTimeout(function onTick() {
+        clearCanvas();
+        drawFood();
+        advanceSnake();
+        drawSnake();
+        main();
+    }, 100)
+}
+
+/* snake function */
 
 function clearCanvas(){
     ctx.fillStyle = GAME_BACKGROUND_COLOR;
@@ -55,18 +75,6 @@ function advanceSnake() {
     } else {
         snake.pop();
     }
-}
-
-function main() {
-    if (didGameEnd()) return;
-
-    setTimeout(function onTick() {
-        clearCanvas();
-        drawFood();
-        advanceSnake();
-        drawSnake();
-        main();
-    }, 100)
 }
 
 function changeDirection(event) {
@@ -103,6 +111,8 @@ function changeDirection(event) {
 
 }
 
+/* food function */
+
 function randomTen(min, max) {
     return Math.round((Math.random() * (max-min) + min) / 10) * 10;
 }
@@ -123,6 +133,8 @@ function drawFood() {
     ctx.fillRect(foodX, foodY, 10, 10);
     ctx.strokeRect(foodX, foodY, 10, 10);
 }
+
+/* game end function */
 
 function didGameEnd() {
     for (let i = 4; i < snake.length; i++) {
