@@ -4,6 +4,8 @@ snake is a remake of the classic game of Snake, made with JavaScript, HTML, and 
 
 ## Usage
 
+https://snake-r42q.onrender.com/ - Deployment
+
 Move the snake with arrow keys, game ends when the snake collides with itself or with the walls.
 
 ## How to use App locally
