@@ -6,12 +6,25 @@ const SNAKE_BORDER_COLOR = 'darkgreen';
 const gameCanvas = document.getElementById("gameCanvas");
 const ctx = gameCanvas.getContext("2d");
 
-ctx.fillStyle = GAME_BACKGROUND_COLOR;
-ctx.strokeStyle = GAME_BORDER_COLOR;
-ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
-ctx.strokeRect(0, 0, gameCanvas.width, gameCanvas.height);
+main();
 
-let snake = [ {x: 150, y: 150}, {x: 140, y: 150}, {x: 130, y: 150}, {x: 120, y: 150}, {x: 110, y: 150}, ];
+function clearCanvas(){
+    ctx.fillStyle = GAME_BACKGROUND_COLOR;
+    ctx.strokeStyle = GAME_BORDER_COLOR;
+    ctx.fillRect(0, 0, gameCanvas.width, gameCanvas.height);
+    ctx.strokeRect(0, 0, gameCanvas.width, gameCanvas.height);
+}
+
+let snake = [ 
+    {x: 150, y: 150}, 
+    {x: 140, y: 150}, 
+    {x: 130, y: 150}, 
+    {x: 120, y: 150}, 
+    {x: 110, y: 150}, 
+];
+
+let dx=10;
+let dy=0;
 
 function drawSnakePart(snakePart) {
     ctx.fillStyle = SNAKE_COLOR;
@@ -24,4 +37,18 @@ function drawSnake() {
     snake.forEach(drawSnakePart);
 }
 
-drawSnake();
+function advanceSnake() {
+    const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+    snake.unshift(head);
+    snake.pop();
+}
+
+function main() {
+    setTimeout(function onTick() {
+        clearCanvas();
+        advanceSnake();
+        drawSnake();
+        main();
+    }, 100)
+}
+
